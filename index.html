@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Book Catalogue</title>
+  </head>
+  <body>
+    <h1>Book Catalogue</h1>
+    <div id="bookContainer"></div>
+
+    <script>
+      // 1. 使用Fetch API获取book.xml文件
+      fetch("book.xml")
+        .then((response) => {
+          // 检查请求是否成功（状态码200-299）
+          if (!response.ok) {
+            throw new Error("Fetch error: " + response.status);
+          }
+          // 将响应转换为文本格式（XML数据）
+          return response.text();
+        })
+        .then((xmlText) => {
+          // 2. 解析XML文本
+          const parser = new DOMParser();
+          const xmlDoc = parser.parseFromString(xmlText, "text/xml");
+
+          // 3. 获取所有book元素
+          const books = xmlDoc.getElementsByTagName("book");
+          const container = document.getElementById("bookContainer");
+
+          // 4. 遍历每个book，提取并展示数据
+          for (let i = 0; i < books.length; i++) {
+            const book = books[i];
+            // 提取子元素内容（需通过getElementsByTagName获取，再取[0].textContent）
+            const title = book.getElementsByTagName("title")[0].textContent;
+            const author = book.getElementsByTagName("author")[0].textContent;
+            const price = book.getElementsByTagName("price")[0].textContent;
+            const bookId = book.getAttribute("id"); // 提取id属性
+
+            // 创建HTML元素展示单本图书信息
+            const bookElement = document.createElement("div");
+            bookElement.innerHTML = `
+        <h3>Book ID: ${bookId}</h3>
+        <p>Title: ${title}</p>
+        <p>Author: ${author}</p>
+        <p>Price: $${price}</p>
+        <hr>
+      `;
+            // 将图书信息添加到页面容器中。。
+            container.appendChild(bookElement);
+          }
+        })
+        .catch((err) => {
+          // 捕获并打印错误（如文件路径错误、XML解析失败）
+          console.error("Fetch error: " + err.message);
+        });
+    </script>
+  </body>
+</html>

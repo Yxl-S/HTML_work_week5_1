@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bookCatalogue>
+  <book id="1">
+    <title>JavaScript</title>
+    <author>Nicholas Zecas</author>
+    <price>99.00</price>
+  </book>
+  <book id="2">
+    <title>XML</title>
+    <author>zhangsan</author>
+    <price>45.50</price>
+  </book>
+</bookCatalogue>
